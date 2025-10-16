@@ -30,34 +30,19 @@ It helps users efficiently manage tasks with add, edit, delete, and toggle compl
 ## Installation & Setup
 
 ### 1️⃣ Clone the repository
-```bash
 git clone https://github.com/amshu-h-u/TaskMasterPro.git
 cd TaskMasterPro
+
 2️⃣ Backend Setup
-bash
-Copy code
 cd backend
 npm init -y              # Initialize Node.js project (if not done)
 npm install express mongoose cors dotenv
-Create a .env file in the backend folder:
-
-ini
-Copy code
-MONGO_URI=mongodb://localhost:27017/taskmasterpro
-PORT=8080
-Start backend server:
-
-bash
-Copy code
-npx nodemon app.js
-# OR
-node app.js
+Create a .env file in the backend folder
+run:nodemon app.js
 Backend runs on: http://localhost:8080
 
 3️⃣ Frontend Setup
-bash
-Copy code
 cd frontend
 npm install
-npm start
+npm run dev
 Frontend runs on: http://localhost:3000
