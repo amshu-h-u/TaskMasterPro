@@ -33,6 +33,7 @@ It helps users efficiently manage tasks with add, edit, delete, and toggle compl
 git clone https://github.com/amshu-h-u/TaskMasterPro.git
 cd TaskMasterPro
 
+---
 2️⃣ Backend Setup
 -**cd backend**
 -**npm init -y**              # Initialize Node.js project (if not done)
@@ -41,8 +42,12 @@ cd TaskMasterPro
 -run:nodemon app.js
 -Backend runs on: http://localhost:8080
 
+---
+
 3️⃣ Frontend Setup
 -cd frontend
 -npm install
 -npm run dev
 -Frontend runs on: http://localhost:3000
+
+---
