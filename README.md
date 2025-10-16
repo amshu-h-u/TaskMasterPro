@@ -34,8 +34,8 @@ git clone https://github.com/amshu-h-u/TaskMasterPro.git
 cd TaskMasterPro
 
 2️⃣ Backend Setup
--cd backend
--npm init -y              # Initialize Node.js project (if not done)
+-**cd backend**
+-**npm init -y**              # Initialize Node.js project (if not done)
 -npm install express mongoose cors dotenv
 -Create a .env file in the backend folder
 -run:nodemon app.js
