@@ -34,6 +34,7 @@ git clone https://github.com/amshu-h-u/TaskMasterPro.git
 cd TaskMasterPro
 
 ---
+```bash
 2️⃣ Backend Setup
 -**cd backend**
 -**npm init -y**              # Initialize Node.js project (if not done)
