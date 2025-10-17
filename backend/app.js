@@ -6,11 +6,12 @@ const userRoutes=require("./routes/routes.js")
 
 dotenv.config();
 const app=express();
+const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use("/",userRoutes)
-app.listen(8080,()=>{
+app.listen(PORT,()=>{
     console.log("Server is listening at port 8080")
 })
 const db_url=process.env.MONGO_URL;
