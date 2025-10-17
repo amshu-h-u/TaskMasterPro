@@ -4,24 +4,27 @@ import axios from "axios";
 export default function Main() {
     const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState('');
-    const [editingIndex, setEditingIndex] = useState(null); // track which task is being edited
+    const [editingIndex, setEditingIndex] = useState(null);
+
+    // ✅ Use environment variable for base URL
+    const API_BASE_URL = import.meta.env.VITE_API_URL || "";
 
     // Fetch all tasks on page load
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const res = await axios.get("http://localhost:8080/tasks");
+                const res = await axios.get(`${API_BASE_URL}/api/tasks`);
                 const mappedTasks = res.data.map(task => ({
                     ...task,
                     text: task.todo
                 }));
                 setTasks(mappedTasks);
             } catch (err) {
-                console.error("Error fetching tasks:", err);
+                console.error("❌ Error fetching tasks:", err);
             }
-        }
+        };
         fetchTasks();
-    }, []);
+    }, [API_BASE_URL]);
 
     // Add new task
     const addTask = async (e) => {
@@ -29,31 +32,30 @@ export default function Main() {
         if (!newTask.trim()) return;
 
         try {
-            const res = await axios.post("http://localhost:8080/tasks", { 
+            const res = await axios.post(`${API_BASE_URL}/api/tasks`, { 
                 todo: newTask, 
                 completed: false 
             });
-            setTasks([...tasks, { ...res.data, text: res.data.todo }]);
+            setTasks([...tasks, { ...res.data.task, text: res.data.task.todo }]);
             setNewTask('');
         } catch (err) {
-            console.error("Error adding task:", err);
+            console.error("❌ Error adding task:", err);
         }
-    }
+    };
 
     // Toggle completed status
     const toggleTask = async (index) => {
         const task = tasks[index];
         try {
-            const res = await axios.patch(`http://localhost:8080/tasks/${task._id}`, {
+            const res = await axios.patch(`${API_BASE_URL}/api/tasks/${task._id}`, {
                 completed: !task.completed
             });
-            alert(res.data.message);
             const updatedTasks = tasks.map((t, i) =>
                 i === index ? { ...t, completed: res.data.task.completed } : t
             );
             setTasks(updatedTasks);
         } catch (err) {
-            console.error("Error updating task:", err);
+            console.error("❌ Error updating task:", err);
         }
     };
 
@@ -61,31 +63,26 @@ export default function Main() {
     const deleteTask = async (index) => {
         const task = tasks[index];
         try {
-            const res = await axios.delete(`http://localhost:8080/tasks/${task._id}`);
-            const updatedTasks = tasks.filter((_, i) => i !== index);
-            setTasks(updatedTasks);
-            alert(res.data.message);
+            await axios.delete(`${API_BASE_URL}/api/tasks/${task._id}`);
+            setTasks(tasks.filter((_, i) => i !== index));
         } catch (err) {
-            console.error("Error deleting task:", err);
+            console.error("❌ Error deleting task:", err);
         }
     };
 
     // Start editing a task
     const startEditing = (index) => {
         setEditingIndex(index);
-        setNewTask(tasks[index].text); // populate input with current task text
-    }
-
+        setNewTask(tasks[index].text);
+    };
 
     // Save edited task
     const editTask = async () => {
-        if (editingIndex === null) return;
+        if (editingIndex === null || !newTask.trim()) return;
 
         const task = tasks[editingIndex];
-        if (!newTask.trim()) return;
-
         try {
-            const res = await axios.put(`http://localhost:8080/tasks/${task._id}`, {
+            const res = await axios.put(`${API_BASE_URL}/api/tasks/${task._id}`, {
                 todo: newTask
             });
             const updatedTasks = tasks.map((t, i) =>
@@ -94,15 +91,16 @@ export default function Main() {
             setTasks(updatedTasks);
             setNewTask('');
             setEditingIndex(null);
-            alert(res.data.message);
         } catch (err) {
-            console.error("Error editing task:", err);
+            console.error("❌ Error editing task:", err);
         }
-    }
+    };
 
     return (
         <div>
-            <h1 className='text-center bg-teal-700 text-white p-3 font-bold'>My Own To-Do App</h1>
+            <h1 className='text-center bg-teal-700 text-white p-3 font-bold'>
+                My Own To-Do App
+            </h1>
 
             <div className='flex justify-center items-center'>
                 <input
@@ -160,5 +158,5 @@ export default function Main() {
                 ))}
             </ul>
         </div>
-    )
+    );
 }
