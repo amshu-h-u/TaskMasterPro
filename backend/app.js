@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+app.get("/", (req, res) => {
+    res.send("Backend is running!");
+});
 app.use("/",userRoutes)
 app.listen(PORT,()=>{
     console.log("Server is listening at port 8080")
