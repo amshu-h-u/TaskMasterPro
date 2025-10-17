@@ -13,7 +13,7 @@ export default function Main() {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const res = await axios.get(`${API_BASE_URL}/api/tasks`);
+                const res = await axios.get(`${API_BASE_URL}/tasks`);
                 const mappedTasks = res.data.map(task => ({
                     ...task,
                     text: task.todo
@@ -32,11 +32,11 @@ export default function Main() {
         if (!newTask.trim()) return;
 
         try {
-            const res = await axios.post(`${API_BASE_URL}/api/tasks`, { 
+            const res = await axios.post(`${API_BASE_URL}/tasks`, { 
                 todo: newTask, 
                 completed: false 
             });
-            setTasks([...tasks, { ...res.data.task, text: res.data.task.todo }]);
+            setTasks([...tasks, { ...res.data, text: res.data.todo }]);
             setNewTask('');
         } catch (err) {
             console.error("❌ Error adding task:", err);
@@ -47,11 +47,11 @@ export default function Main() {
     const toggleTask = async (index) => {
         const task = tasks[index];
         try {
-            const res = await axios.patch(`${API_BASE_URL}/api/tasks/${task._id}`, {
+            const res = await axios.patch(`${API_BASE_URL}/tasks/${task._id}`, {
                 completed: !task.completed
             });
             const updatedTasks = tasks.map((t, i) =>
-                i === index ? { ...t, completed: res.data.task.completed } : t
+                i === index ? { ...t, completed: res.data.completed } : t
             );
             setTasks(updatedTasks);
         } catch (err) {
@@ -63,7 +63,7 @@ export default function Main() {
     const deleteTask = async (index) => {
         const task = tasks[index];
         try {
-            await axios.delete(`${API_BASE_URL}/api/tasks/${task._id}`);
+            await axios.delete(`${API_BASE_URL}/tasks/${task._id}`);
             setTasks(tasks.filter((_, i) => i !== index));
         } catch (err) {
             console.error("❌ Error deleting task:", err);
@@ -82,11 +82,11 @@ export default function Main() {
 
         const task = tasks[editingIndex];
         try {
-            const res = await axios.put(`${API_BASE_URL}/api/tasks/${task._id}`, {
+            const res = await axios.put(`${API_BASE_URL}/tasks/${task._id}`, {
                 todo: newTask
             });
             const updatedTasks = tasks.map((t, i) =>
-                i === editingIndex ? { ...t, todo: res.data.task.todo, text: res.data.task.todo } : t
+                i === editingIndex ? { ...t, todo: res.data.todo, text: res.data.todo } : t
             );
             setTasks(updatedTasks);
             setNewTask('');
