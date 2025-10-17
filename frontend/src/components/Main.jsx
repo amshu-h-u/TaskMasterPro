@@ -86,7 +86,7 @@ export default function Main() {
                 todo: newTask
             });
             const updatedTasks = tasks.map((t, i) =>
-                i === editingIndex ? { ...t, todo: res.data.todo, text: res.data.todo } : t
+                i === editingIndex ? { ...t, todo: res.data.task.todo, text: res.data.task.todo } : t
             );
             setTasks(updatedTasks);
             setNewTask('');
